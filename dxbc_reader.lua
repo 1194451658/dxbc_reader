@@ -2,6 +2,9 @@
 
 local DataDump = require 'table_dumper'
 
+--  ----------------------
+--      解析命令行
+--  ----------------------
 
 local argparse = require 'argparse'
 local arg_parse = argparse('dxbc_reader')
@@ -26,6 +29,9 @@ end
 
 local DEBUG=args.debug
 
+--  -----------------------
+--      dxcb的另外2个文件
+--  -----------------------
 local parser = require 'dxbc_parse'
 local dxbc_def = require 'dxbc_def'
 
@@ -34,9 +40,11 @@ local file_name = args.input
 
 local _format = string.format
 
+-- 打开输入文件
 local file = io.open(file_name, 'r')
 local str = file:read('*a')
 
+-- 语法解析
 local parse_data = parser(str)
 
 dxbc_def:init(parse_data)
