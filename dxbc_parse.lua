@@ -8,8 +8,14 @@ local R, P, C, Cp, S, V, Ct, Cmt, Carg =
     lpeg.R, lpeg.P, lpeg.C, lpeg.Cp, lpeg.S, lpeg.V, lpeg.Ct, lpeg.Cmt, lpeg.Carg
 
 
+-- 输入结束
+-- 输入中，已经没有了字符
 local eof = P(-1)
+
+-- 空白符
 local space = S(' \r\t')
+
+-- Q: Carg ???
 local line = Cmt(P"\n"*Carg(1),
     function(_, pos, state)
         local line = state.line
@@ -19,41 +25,60 @@ local line = Cmt(P"\n"*Carg(1),
     end)
 line = P'\n'
 
+-- 跳过，空白符，换行符
 local pass = (space+line)^0
 
+-- 十进制数字，字符
 local _dec = R('09')
+
+-- 十进制整数常量
 local _int = _dec^1
+
+-- 浮点数常量
 local _float = P('-')^-1 * _dec^1 * (P('.')^-1 * _dec^0)^-1
 
 local _alpha = R('az', 'AZ')
 local _alpnum = _alpha+_dec
 
+-- 将float转换成数字类型
 local number = C(_float)/function(...)
         return tonumber(...)
     end
 
+-- 十六进制
+-- 不应该是alpnum
+-- 不过没关系，不是自己写的dxbc
 local _hex = (P('0x') + P('0X')) * (_alpnum^1)
 local hex = C(_hex)/function(...)
         return ...
     end
 
+-- 变量名
+-- 不一定是变量，就是名称
 local variable = (_alpnum + S'_$')^1
 
+-- 单行注释
 local comment = P'//' * C(P(1-P'\n')^0) / function(comment)
         return {comment = comment}
     end
 
+-- 一直解析input到遇到expect
 local function any_patt(expect)
     return P(1-P(expect))^1
 end
 
 -- add|dcl_resource_texture2d (float,float,float,float)|sample_indexable(texture2d)(float,float,float,float)
-local op = C(variable * (space^-1 * (P'('*any_patt(')')*P')')
-    + ' linear'
-    + ' noperspective'
-    + ' constant'
-    + ' linearcentroid')^0)
+local op = C(
+    variable * (
+        space^-1 * (P'(' * any_patt(')') * P')')        -- 解析括号
+        + ' linear'
+        + ' noperspective'
+        + ' constant'
+        + ' linearcentroid'
+    )^0
+)
 
+-- 负号的Capture
 local _negtive = C('-') / function (neg)
         if neg then
             return {neg=true}
@@ -62,19 +87,28 @@ local _negtive = C('-') / function (neg)
         end
     end
 
+-- 变量的Capture
 local _var_name = C(variable) / function(var_name)
         return {name = var_name}
     end
 
+-- 变量名 或 _+.
+-- 例如： mov r8.x, x1[r7.x + 0].x
 local _var_idx_patt = C((_alpnum+S'_+ .')^1)
+
+-- []中括号内的，内容
 local _var_idx = P'[' * _var_idx_patt * P']' / function(var_idx)
         return {idx = var_idx}
     end
 
+-- 变量.后的内容
 local _var_suffix = P'.' * C(_alpha^1) / function(var_suffix)
         return {suffix = var_suffix}
     end
 
+-- 解析l(数字, 数字, 数字)，这种语句
+-- 貌似就是，定义浮点常量
+-- mad r5.y, r2.y, l(8.000000), l(-7.000000)
 local _vector = P'l(' * (hex+number) * (pass*P','*pass * (hex+number))^0 *P')' / function(...)
         return {vals = {...}}
     end
