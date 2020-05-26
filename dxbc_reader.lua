@@ -51,13 +51,27 @@ dxbc_def:init(parse_data)
 
 --print(DataDump(parse_data))
 
+-- op: 命令的字符串
+-- 匹配所有命令的pattern, 看是哪个命令
 local function get_op(op)
     if not op then return end
 
+    -- 匹配的命令pattern，找到的capture
+    -- 被当作op_param
     local capture
+
+    -- 匹配的命令pattern，被当作op_name
     local target_op
     for op_def in  pairs(dxbc_def.shader_def) do
-        if op:gsub('^' .. op_def .. '$', function(...) capture = {...} end) and capture then
+        -- lua，调用字符串的gsub
+        -- op_def是，匹配命令的正则表达式
+        if op:gsub(
+            '^' .. op_def .. '$',
+            function(...) 
+                capture = {...} 
+            end
+            ) and
+            capture then
             target_op = op_def
             break
         end
@@ -65,6 +79,8 @@ local function get_op(op)
     return target_op, capture
 end
 
+-- 就是把value，也当成了key
+-- 可以判断一个value是否存在
 local function arr2dic(list)
     local dic = {}
     for idx, v in pairs(list) do
@@ -105,9 +121,14 @@ local BLOCK_DEF = {
     }
 }
 
+-- command: lpeg匹配到的命令
 local function pre_process_command(command)
+    -- 命令的参数
     if command.args then
         for _, reg in pairs(command.args) do
+
+            -- 如果有[]里的内容
+            -- 如果，可以转换成数字，则转换成数字
             if reg.idx then
                 if tonumber(reg.idx) then
                     reg.idx = tonumber(reg.idx)
@@ -166,20 +187,43 @@ end
 append('}')
 ------------ CBUFFER DEFINE END
 
+-- 生成，主函数
 append("void main(INPUT in) {")
 blocks[1] = {close = {}}
+
+-- 遍历语法树
 while idx <= #parse_data do
     local command = parse_data[idx]
+
+    -- 如果是命令
     if command.op then
+        -- op: 感觉像是字符串格式
+        -- op_name: 匹配上的命令的pattern
+        -- op_param: 命令的参数
         local op_name, op_param = get_op(command.op)
 
+        -- 有匹配到，是哪个命令
         if op_name then
+
+            -- def.lua中定义的
+            -- 命令对应的函数
             local op_func = dxbc_def.shader_def[op_name]
             if op_func then
                 pre_process_command(command)
+
+                -- 处理op_param，可以方便的判断，有没有_sat
+                -- 例如命令： mov_sat r0.xy, v1.yxyy
+                -- 就是把value，也当成了key
+                -- 可以判断一个value是否存在
                 op_param = op_param and arr2dic( op_param) or {}
+
+                -- op_str: 翻译之后的语句
+                -- block_tag: 
                 local op_str, block_tag = op_func(op_param, table.unpack(command.args))
 
+                -- blocks: 
+                --  * 标记{}的栈？
+                --  * 用来判断，是第几层缩进
                 local last_block = blocks[#blocks]
                 if last_block and last_block.close[block_tag] then
                     table.remove(blocks, #blocks)
@@ -192,8 +236,14 @@ while idx <= #parse_data do
                     end
                     append(string.rep('\t', #blocks) .. command.src)
                 end
+
+                -- 生成代码的，最后一个字符
                 local last_gram = op_str:sub(#op_str)
+
+                -- 判断，行末结束字符是什么
                 local end_block = (last_gram == '}' or last_gram == '{' ) and '' or ';'
+
+                -- 写入，生成的代码
                 append(string.format('%s%s%s', string.rep('\t', #blocks), op_str, end_block))
 
                 if BLOCK_DEF[block_tag] then
