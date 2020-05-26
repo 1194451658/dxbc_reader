@@ -113,6 +113,7 @@ local _vector = P'l(' * (hex+number) * (pass*P','*pass * (hex+number))^0 *P')' /
         return {vals = {...}}
     end
 
+-- 把...中的，所有tbl，都合并到ret中
 local function merge_tbl(...)
     local ret = {}
     for _, tbl in ipairs({...}) do
@@ -123,16 +124,22 @@ local function merge_tbl(...)
     return ret
 end
 
+-- \: 竖线是绝对值？
+-- 例子： dp4 r0.x, |r7.xyzw|, l(1.000000, 1.000000, 1.000000, 1.000000)
 local _abs = C'|' / function()
         return {abs=true}
     end
 
+-- - l(数字， 数字， 数字), 或
+-- - ...
 -- TODO abs process
 local var = (_negtive^-1*_vector + _negtive^-1 * _abs^-1
                 * _var_name * _var_idx^-1 * _var_suffix^-1 * _abs^-1) / merge_tbl
 
+-- , 分割的
 local args = var * (space^0*P(",")*space^0 *var)^0
 
+-- 命令
 local command = C(op * space ^0 * args^-1) / function(...)
         local data = {...}
         local src = data[1]
@@ -148,9 +155,15 @@ local command = C(op * space ^0 * args^-1) / function(...)
 
 --print(DataDump({lpeg.match(command, 'move x0[1].x, xxx')}))
 
+-- 由注释、和命令组成
 local trunk = ((comment+command)*pass)^0
 
+--  --------------------------------
+--       解析关于cbuffer内容
+--  --------------------------------
+
 ----------------- CBUFFER START
+-- 模式p，前后加空白字符
 local function patt(p, name)
     return P(pass*C(p)*pass)/function(v)
             local numv = tonumber(v)
@@ -186,6 +199,7 @@ print(DataDump({lpeg.match(cbclass^0, input)}))
  --]=]
 
 
+-- 解析cbuffer
 local function process_cbuffer(str)
     return {lpeg.match(cbclass^0, str)}
 end
@@ -246,21 +260,33 @@ local function process_output(list, start_idx, end_idx)
 end
 
 return function(input)
+        -- 直接匹配整个语法
         local _ret = {lpeg.match(trunk, input)}
+
+        -- 所有的命令
         local ret = {}
+
         local first_op
+
+        -- 所有的，开头注释
         local comms = {}
         for _, _line in ipairs(_ret) do
             if type(_line) ~= 'table' or _line.comment ~= '' then
                 if not first_op and type(_line) == 'table' and _line.comment then
+                    -- 开头所有的注释
                     comms[#comms+1] = _line.comment
                 else
                     first_op = true
+                    -- 第一个命令
                     table.insert(ret, _line)
                 end
             end
         end
+
+        -- 设置注释中，各个段落的起始行
+        -- 例如："Resource Bindings"的起始行, "Input signature"的起始行, ...
         local block_data = {}
+
         local set_block_data = function(block_name, idx)
             for _, v in pairs(block_data) do
                 if not v.last_idx then
@@ -271,6 +297,8 @@ return function(input)
 
             block_data[block_name] = {idx = idx}
         end
+
+        -- 解析注释，各段的位置
         for idx=1, #comms do
             if comms[idx]:find('Buffer Definitions:') then
                 set_block_data('idx_cbuffer', idx)
@@ -282,6 +310,7 @@ return function(input)
                 set_block_data('idx_output', idx)
             end
         end
+
         for _, v in pairs(block_data) do
             if not v.last_idx then
                 v.last_idx = #comms
