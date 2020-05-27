@@ -199,6 +199,8 @@ m.shader_def = {
     end,
 
     -- mov, dmov命令
+    -- op_args: '[d]?mov(.*)'解析mov命令，后面的后缀
+    -- a, b: mov命令的args
     ['[d]?mov(.*)'] = function(op_args, a, b)
         if op_args._sat then
             return _format('%s = saturate(%s)', get_var_name(a), get_var_name(b, a))

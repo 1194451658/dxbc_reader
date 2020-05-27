@@ -324,6 +324,8 @@ return function(input)
 
         --print(DataDump(block_data))
 
+        -- 将，注释里的，解析到的数据
+        -- 插入到，返回的第一个位置
         table.insert(ret, 1, {
                 cbuff_data = cbuff_data,
                 binding_data = binding_data,

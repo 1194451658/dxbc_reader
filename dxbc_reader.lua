@@ -53,6 +53,14 @@ dxbc_def:init(parse_data)
 
 -- op: 命令的字符串
 -- 匹配所有命令的pattern, 看是哪个命令
+-- command:
+-- {
+--   args={ { name="r0", suffix="y" }, { idx="6", name="cb0", suffix="w" } },
+--   op="mov",
+--   src="mov r0.y, cb0[6].w" 
+-- },
+
+-- 返回：匹配上的命令的pattern, 匹配上的命令的参数类型(例如：)
 local function get_op(op)
     if not op then return end
 
@@ -60,7 +68,7 @@ local function get_op(op)
     -- 被当作op_param
     local capture
 
-    -- 匹配的命令pattern，被当作op_name
+    -- 匹配的命令的pattern，被当作op_name
     local target_op
     for op_def in  pairs(dxbc_def.shader_def) do
         -- lua，调用字符串的gsub
@@ -121,6 +129,7 @@ local BLOCK_DEF = {
     }
 }
 
+-- 把参数中的idx，能转换成nubmer，就转换成number
 -- command: lpeg匹配到的命令
 local function pre_process_command(command)
     -- 命令的参数
@@ -143,6 +152,7 @@ local idx = 2
 local line_id = 1
 local blocks = {}
 
+-- 注释里定义的内容
 local res_def = parse_data[1]
 
 local function append(msg)
@@ -152,6 +162,11 @@ end
 if DEBUG == 't' then
     append(DataDump(res_def.binding_data))
 end
+
+--
+-- 根据dxbc注释里，定义的内容
+-- 生成class, class INPUT, class OUT
+--
 
 ------------  CBUFFER DEFINE
 for _, cbuff in pairs(res_def.cbuff_data) do
@@ -192,14 +207,26 @@ append("void main(INPUT in) {")
 blocks[1] = {close = {}}
 
 -- 遍历语法树
+-- idx: 
+--  * 从2开始
+--  * 跳过开头的，注释里的内容
+--  * 跳过开头的，例如：ps_5_0语句
 while idx <= #parse_data do
+    -- command: 
+    --  * dxbc命令
+    --  * 例如：
+    -- {
+    --   args={ { name="r0", suffix="y" }, { idx="6", name="cb0", suffix="w" } },
+    --   op="mov",
+    --   src="mov r0.y, cb0[6].w" 
+    -- },
     local command = parse_data[idx]
 
     -- 如果是命令
     if command.op then
         -- op: 感觉像是字符串格式
         -- op_name: 匹配上的命令的pattern
-        -- op_param: 命令的参数
+        -- op_param: 命令后面的后缀，例如：mov_sat中的"_sat"
         local op_name, op_param = get_op(command.op)
 
         -- 有匹配到，是哪个命令
@@ -209,6 +236,7 @@ while idx <= #parse_data do
             -- 命令对应的函数
             local op_func = dxbc_def.shader_def[op_name]
             if op_func then
+                -- 把command参数中的idx，能转换成nubmer，就转换成number
                 pre_process_command(command)
 
                 -- 处理op_param，可以方便的判断，有没有_sat
@@ -217,8 +245,8 @@ while idx <= #parse_data do
                 -- 可以判断一个value是否存在
                 op_param = op_param and arr2dic( op_param) or {}
 
+                -- 进行语句的翻译
                 -- op_str: 翻译之后的语句
-                -- block_tag: 
                 local op_str, block_tag = op_func(op_param, table.unpack(command.args))
 
                 -- blocks: 
