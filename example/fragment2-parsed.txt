@@ -1,0 +1,1548 @@
+return {
+  {
+    binding_data={
+      { bind="s1", name="sMixtureMapSampler" },
+      { bind="s2", name="sBlockMapSampler" },
+      { bind="s4", name="sNormalMapSampler" },
+      { bind="s5", name="sLightMapSampler" },
+      { bind="s7", name="sShadowMapSampler" },
+      { bind="s8", name="sOverlayMapSampler" },
+      { bind="s9", name="sAuxiliaryMapSampler" },
+      { bind="t1", name="tMixtureMap" },
+      { bind="t2", name="tBlockMap" },
+      { bind="t4", name="tNormalMap" },
+      { bind="t5", name="tLightMap" },
+      { bind="t7", name="tShadowMap" },
+      { bind="t8", name="tOverlayMap" },
+      { bind="t9", name="tAuxiliaryMap" },
+      { bind="cb0", name="Batch" },
+      { bind="cb1", name="Shader" },
+      { bind="cb3", name="GlobalPS" } 
+    },
+    cbuff_data={
+      {
+        cbuffer_name="GlobalPS",
+        vars={
+          { idx=0, mask_start="x", name="CameraPosPS", offset=0, size=16, type="float4" },
+          { idx=1, mask_start="x", name="CameraInfoPS", offset=16, size=16, type="float4" },
+          { idx=2, mask_start="x", name="EnvInfo", offset=32, size=16, type="float4" },
+          { idx=3, mask_start="x", name="SunColor", offset=48, size=16, type="float4" },
+          { idx=4, mask_start="x", name="SunDirection", offset=64, size=16, type="float4" },
+          { idx=5, mask_start="x", name="AmbientColor", offset=80, size=16, type="float4" },
+          { idx=6, mask_start="x", name="FogColor", offset=96, size=16, type="float4" },
+          { idx=7, mask_start="x", name="ShadowColor", offset=112, size=16, type="float4" },
+          { idx=8, mask_start="x", name="ScreenColor", offset=128, size=16, type="float4" },
+          {
+            idx=9,
+            mask_start="x",
+            name="ReflectionPos",
+            offset=144,
+            size=16,
+            type="float4" 
+          },
+          {
+            idx=10,
+            mask_start="x",
+            name="ScreenInfoPS",
+            offset=160,
+            size=16,
+            type="float4" 
+          },
+          { idx=11, mask_start="x", name="Misc", offset=176, size=16, type="float4" } 
+        } 
+      },
+      {
+        cbuffer_name="Batch",
+        vars={
+          { idx=0, mask_start="x", name="World", offset=0, size=48, type="float4x3" },
+          { idx=3, mask_start="x", name="cTintColor1", offset=48, size=16, type="float4" },
+          { idx=4, mask_start="x", name="cTintColor2", offset=64, size=16, type="float4" },
+          { idx=5, mask_start="x", name="cTintColor3", offset=80, size=16, type="float4" },
+          { idx=6, mask_start="x", name="cShadowBias", offset=96, size=16, type="float4" },
+          { idx=7, mask_start="x", name="cPointCloud", offset=112, size=96, type="float4" },
+          { idx=13, mask_start="x", name="cParamter", offset=208, size=16, type="float4" },
+          { idx=14, mask_start="x", name="cParamter2", offset=224, size=16, type="float4" },
+          {
+            idx=15,
+            mask_start="x",
+            name="cVirtualLitDir",
+            offset=240,
+            size=16,
+            type="float4" 
+          },
+          {
+            idx=16,
+            mask_start="x",
+            name="cVirtualLitColor",
+            offset=256,
+            size=16,
+            type="float4" 
+          },
+          {
+            idx=17,
+            mask_start="x",
+            name="WorldViewProj",
+            offset=272,
+            size=64,
+            type="float4x4" 
+          },
+          {
+            idx=21,
+            mask_start="x",
+            name="LastWorldViewProjTex",
+            offset=336,
+            size=64,
+            type="float4x4" 
+          } 
+        } 
+      },
+      {
+        cbuffer_name="Shader",
+        vars={
+          { idx=0, mask_start="x", name="cAliasingFactor", offset=0, size=4, type="float" },
+          { idx=0, mask_start="y", name="cEnvStrength", offset=4, size=4, type="float" },
+          { idx=0, mask_start="z", name="cRoughnessLow", offset=8, size=4, type="float" },
+          { idx=0, mask_start="w", name="cRoughnessHigh", offset=12, size=4, type="float" },
+          { idx=1, mask_start="x", name="cBloomScale", offset=16, size=4, type="float" },
+          { idx=1, mask_start="y", name="cMetallic", offset=20, size=4, type="float" },
+          { idx=1, mask_start="z", name="cSmoothness", offset=24, size=4, type="float" },
+          { idx=1, mask_start="w", name="cFlowPeriod", offset=28, size=4, type="float" },
+          { idx=2, mask_start="x", name="cBlendSharpness", offset=32, size=4, type="float" },
+          { idx=3, mask_start="x", name="cBlockScale", offset=48, size=16, type="float4" },
+          {
+            idx=4,
+            mask_start="x",
+            name="cBlockShrinkage",
+            offset=64,
+            size=16,
+            type="float4" 
+          },
+          {
+            idx=5,
+            mask_start="x",
+            name="cLightMapScale",
+            offset=80,
+            size=16,
+            type="float4" 
+          },
+          {
+            idx=6,
+            mask_start="x",
+            name="cLightMapUVTransform",
+            offset=96,
+            size=16,
+            type="float4" 
+          },
+          {
+            idx=7,
+            mask_start="x",
+            name="cOverlayMapUVTransform",
+            offset=112,
+            size=16,
+            type="float4" 
+          } 
+        } 
+      } 
+    },
+    input_data={
+      { bind="v0", mask="xyzw", name="SV_Position", register="0" },
+      { bind="v1", mask="xyzw", name="TEXCOORD", register="1" },
+      { bind="v2", mask="xyzw", name="TEXCOORD", register="2" },
+      { bind="v3", mask="xyzw", name="TEXCOORD", register="3" },
+      { bind="v4", mask="xyzw", name="TEXCOORD", register="4" },
+      { bind="v5", mask="xyzw", name="TEXCOORD", register="5" },
+      { bind="v6", mask="xyzw", name="TEXCOORD", register="6" },
+      { bind="v7", mask="xyzw", name="TEXCOORD", register="7" },
+      { bind="v8", mask="xyzw", name="TEXCOORD", register="8" } 
+    },
+    output_data={ { bind="o0", mask="xyzw", name="SV_Target", register="0" } } 
+  },
+  { args={  }, op="ps_5_0", src="ps_5_0" },
+  {
+    args={ { name="refactoringAllowed" } },
+    op="dcl_globalFlags",
+    src="dcl_globalFlags refactoringAllowed" 
+  },
+  {
+    args={ { idx="12", name="CB3" }, { name="immediateIndexed" } },
+    op="dcl_constantbuffer",
+    src="dcl_constantbuffer CB3[12], immediateIndexed" 
+  },
+  {
+    args={ { idx="14", name="CB0" }, { name="immediateIndexed" } },
+    op="dcl_constantbuffer",
+    src="dcl_constantbuffer CB0[14], immediateIndexed" 
+  },
+  {
+    args={ { idx="8", name="CB1" }, { name="immediateIndexed" } },
+    op="dcl_constantbuffer",
+    src="dcl_constantbuffer CB1[8], immediateIndexed" 
+  },
+  {
+    args={ { name="s1" }, { name="mode_default" } },
+    op="dcl_sampler",
+    src="dcl_sampler s1, mode_default" 
+  },
+  {
+    args={ { name="s2" }, { name="mode_default" } },
+    op="dcl_sampler",
+    src="dcl_sampler s2, mode_default" 
+  },
+  {
+    args={ { name="s4" }, { name="mode_default" } },
+    op="dcl_sampler",
+    src="dcl_sampler s4, mode_default" 
+  },
+  {
+    args={ { name="s5" }, { name="mode_default" } },
+    op="dcl_sampler",
+    src="dcl_sampler s5, mode_default" 
+  },
+  {
+    args={ { name="s7" }, { name="mode_default" } },
+    op="dcl_sampler",
+    src="dcl_sampler s7, mode_default" 
+  },
+  {
+    args={ { name="s8" }, { name="mode_default" } },
+    op="dcl_sampler",
+    src="dcl_sampler s8, mode_default" 
+  },
+  {
+    args={ { name="s9" }, { name="mode_default" } },
+    op="dcl_sampler",
+    src="dcl_sampler s9, mode_default" 
+  },
+  {
+    args={ { name="t1" } },
+    op="dcl_resource_texture2d (float,float,float,float)",
+    src="dcl_resource_texture2d (float,float,float,float) t1" 
+  },
+  {
+    args={ { name="t2" } },
+    op="dcl_resource_texture2d (float,float,float,float)",
+    src="dcl_resource_texture2d (float,float,float,float) t2" 
+  },
+  {
+    args={ { name="t4" } },
+    op="dcl_resource_texture2d (float,float,float,float)",
+    src="dcl_resource_texture2d (float,float,float,float) t4" 
+  },
+  {
+    args={ { name="t5" } },
+    op="dcl_resource_texture2d (float,float,float,float)",
+    src="dcl_resource_texture2d (float,float,float,float) t5" 
+  },
+  {
+    args={ { name="t7" } },
+    op="dcl_resource_texture2d (float,float,float,float)",
+    src="dcl_resource_texture2d (float,float,float,float) t7" 
+  },
+  {
+    args={ { name="t8" } },
+    op="dcl_resource_texture2d (float,float,float,float)",
+    src="dcl_resource_texture2d (float,float,float,float) t8" 
+  },
+  {
+    args={ { name="t9" } },
+    op="dcl_resource_texture2d (float,float,float,float)",
+    src="dcl_resource_texture2d (float,float,float,float) t9" 
+  },
+  {
+    args={ { name="v1", suffix="xyzw" } },
+    op="dcl_input_ps linear",
+    src="dcl_input_ps linear v1.xyzw" 
+  },
+  {
+    args={ { name="v2", suffix="w" } },
+    op="dcl_input_ps linear",
+    src="dcl_input_ps linear v2.w" 
+  },
+  {
+    args={ { name="v3", suffix="xyz" } },
+    op="dcl_input_ps linear",
+    src="dcl_input_ps linear v3.xyz" 
+  },
+  {
+    args={ { name="v4", suffix="xyz" } },
+    op="dcl_input_ps linear",
+    src="dcl_input_ps linear v4.xyz" 
+  },
+  {
+    args={ { name="v5", suffix="xyzw" } },
+    op="dcl_input_ps linear",
+    src="dcl_input_ps linear v5.xyzw" 
+  },
+  {
+    args={ { name="v6", suffix="xyzw" } },
+    op="dcl_input_ps linear",
+    src="dcl_input_ps linear v6.xyzw" 
+  },
+  {
+    args={ { name="v7", suffix="xyzw" } },
+    op="dcl_input_ps linear",
+    src="dcl_input_ps linear v7.xyzw" 
+  },
+  {
+    args={ { name="v8", suffix="xyzw" } },
+    op="dcl_input_ps linear",
+    src="dcl_input_ps linear v8.xyzw" 
+  },
+  {
+    args={ { name="o0", suffix="xyzw" } },
+    op="dcl_output",
+    src="dcl_output o0.xyzw" 
+  },
+  { args={ { name="9" } }, op="dcl_temps", src="dcl_temps 9" },
+  {
+    args={ { name="r0", suffix="y" }, { idx="6", name="cb0", suffix="w" } },
+    op="mov",
+    src="mov r0.y, cb0[6].w" 
+  },
+  {
+    args={ { name="r0", suffix="x" }, { vals={ 0 } } },
+    op="mov",
+    src="mov r0.x, l(0)" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyz" },
+      { name="v8", suffix="xyzx" },
+      { name="v8", suffix="wwww" } 
+    },
+    op="div",
+    src="div r1.xyz, v8.xyzx, v8.wwww" 
+  },
+  {
+    args={
+      { name="r0", suffix="zw" },
+      { name="r1", suffix="xxxy" },
+      { idx="6", name="cb0", suffix="wwww" } 
+    },
+    op="div",
+    src="div r0.zw, r1.xxxy, cb0[6].wwww" 
+  },
+  {
+    args={
+      { name="r0", suffix="zw" },
+      { name="r0", suffix="zzzw" },
+      { vals={ 0.0, 0.0, -0.5, -0.5 } } 
+    },
+    op="add",
+    src="add r0.zw, r0.zzzw, l(0.000000, 0.000000, -0.500000, -0.500000)" 
+  },
+  {
+    args={ { name="r0", suffix="zw" }, { name="r0", suffix="zzzw" } },
+    op="frc",
+    src="frc r0.zw, r0.zzzw" 
+  },
+  {
+    args={
+      { name="r2", suffix="xy" },
+      { name="r0", suffix="zwzz" },
+      { vals={ -0.5, -0.5, 0.0, 0.0 } } 
+    },
+    op="add",
+    src="add r2.xy, r0.zwzz, l(-0.500000, -0.500000, 0.000000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r2", suffix="xy" },
+      { name="r2", neg=true, suffix="xyxx" },
+      { idx="6", name="cb0", suffix="wwww" },
+      { name="r1", suffix="xyxx" } 
+    },
+    op="mad",
+    src="mad r2.xy, -r2.xyxx, cb0[6].wwww, r1.xyxx" 
+  },
+  {
+    args={
+      { name="r3", suffix="xyzw" },
+      { name="r0", suffix="yxxy" },
+      { name="r2", suffix="xyxy" } 
+    },
+    op="add",
+    src="add r3.xyzw, r0.yxxy, r2.xyxy" 
+  },
+  {
+    args={
+      { name="r2", suffix="x" },
+      { name="r2", suffix="xyxx" },
+      { name="t7", suffix="xyzw" },
+      { name="s7" } 
+    },
+    op="sample_indexable(texture2d)(float,float,float,float)",
+    src="sample_indexable(texture2d)(float,float,float,float) r2.x, r2.xyxx, t7.xyzw, s7" 
+  },
+  {
+    args={
+      { name="r0", suffix="xy" },
+      { name="r0", suffix="xyxx" },
+      { name="r3", suffix="xyxx" } 
+    },
+    op="add",
+    src="add r0.xy, r0.xyxx, r3.xyxx" 
+  },
+  {
+    args={
+      { name="r2", suffix="w" },
+      { name="r0", suffix="xyxx" },
+      { name="t7", suffix="yzwx" },
+      { name="s7" } 
+    },
+    op="sample_indexable(texture2d)(float,float,float,float)",
+    src="sample_indexable(texture2d)(float,float,float,float) r2.w, r0.xyxx, t7.yzwx, s7" 
+  },
+  {
+    args={
+      { name="r2", suffix="y" },
+      { name="r3", suffix="xyxx" },
+      { name="t7", suffix="yxzw" },
+      { name="s7" } 
+    },
+    op="sample_indexable(texture2d)(float,float,float,float)",
+    src="sample_indexable(texture2d)(float,float,float,float) r2.y, r3.xyxx, t7.yxzw, s7" 
+  },
+  {
+    args={
+      { name="r2", suffix="z" },
+      { name="r3", suffix="zwzz" },
+      { name="t7", suffix="yzxw" },
+      { name="s7" } 
+    },
+    op="sample_indexable(texture2d)(float,float,float,float)",
+    src="sample_indexable(texture2d)(float,float,float,float) r2.z, r3.zwzz, t7.yzxw, s7" 
+  },
+  {
+    args={ { name="r0", suffix="x" }, { name="r1", suffix="z" }, { vals={ 0.99999 } } },
+    op="min",
+    src="min r0.x, r1.z, l(0.999990)" 
+  },
+  {
+    args={
+      { name="r1", suffix="xy" },
+      { name="r1", suffix="xyxx" },
+      { vals={ -0.5, -0.5, 0.0, 0.0 } } 
+    },
+    op="add",
+    src="add r1.xy, r1.xyxx, l(-0.500000, -0.500000, 0.000000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r1", suffix="xy" },
+      { abs=true, name="r1", neg=true, suffix="xyxx" },
+      { vals={ 0.5, 0.5, 0.0, 0.0 } } 
+    },
+    op="add",
+    src="add r1.xy, -|r1.xyxx|, l(0.500000, 0.500000, 0.000000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="y" },
+      { name="r1", suffix="y" },
+      { name="r1", suffix="x" } 
+    },
+    op="min",
+    src="min r0.y, r1.y, r1.x" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyzw" },
+      { name="r2", suffix="xyzw" },
+      { name="r0", suffix="xxxx" } 
+    },
+    op="lt",
+    src="lt r1.xyzw, r2.xyzw, r0.xxxx" 
+  },
+  {
+    args={
+      { name="r2", suffix="xy" },
+      { name="r1", suffix="xzxx" },
+      { vals={ -1.0, -1.0, 0, 0 } },
+      { vals={ -0.0, -0.0, 0, 0 } } 
+    },
+    op="movc",
+    src="movc r2.xy, r1.xzxx, l(-1.000000,-1.000000,0,0), l(-0.000000,-0.000000,0,0)" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyzw" },
+      { name="r1", suffix="xyzw" },
+      { vals={ "0x3f800000", "0x3f800000", "0x3f800000", "0x3f800000" } } 
+    },
+    op="and",
+    src="and r1.xyzw, r1.xyzw, l(0x3f800000, 0x3f800000, 0x3f800000, 0x3f800000)" 
+  },
+  {
+    args={
+      { name="r1", suffix="yw" },
+      { name="r2", suffix="xxxy" },
+      { name="r1", suffix="yyyw" } 
+    },
+    op="add",
+    src="add r1.yw, r2.xxxy, r1.yyyw" 
+  },
+  {
+    args={
+      { name="r0", suffix="xz" },
+      { name="r0", suffix="zzzz" },
+      { name="r1", suffix="yywy" },
+      { name="r1", suffix="xxzx" } 
+    },
+    op="mad",
+    src="mad r0.xz, r0.zzzz, r1.yywy, r1.xxzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="z" },
+      { name="r0", neg=true, suffix="x" },
+      { name="r0", suffix="z" } 
+    },
+    op="add",
+    src="add r0.z, -r0.x, r0.z" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r0", suffix="w" },
+      { name="r0", suffix="z" },
+      { name="r0", suffix="x" } 
+    },
+    op="mad",
+    src="mad r0.x, r0.w, r0.z, r0.x" 
+  },
+  {
+    args={
+      { name="r0", suffix="z" },
+      { name="v2", suffix="w" },
+      { idx="11", name="cb3", suffix="y" } 
+    },
+    op="add",
+    src="add r0.z, v2.w, cb3[11].y" 
+  },
+  {
+    args={ { name="r0", suffix="z" }, { name="r0", suffix="z" }, { vals={ 0.45 } } },
+    op="mul",
+    src="mul r0.z, r0.z, l(0.450000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="w" },
+      { name="v4", suffix="xyzx" },
+      { name="v4", suffix="xyzx" } 
+    },
+    op="dp3",
+    src="dp3 r0.w, v4.xyzx, v4.xyzx" 
+  },
+  {
+    args={ { name="r0", suffix="w" }, { name="r0", suffix="w" } },
+    op="sqrt",
+    src="sqrt r0.w, r0.w" 
+  },
+  {
+    args={
+      { name="r0", suffix="z" },
+      { name="r0", suffix="w" },
+      { name="r0", suffix="z" } 
+    },
+    op="div",
+    src="div r0.z, r0.w, r0.z" 
+  },
+  {
+    args={
+      { name="r0", suffix="w" },
+      { name="r0", suffix="w" },
+      { idx="13", name="cb0", suffix="w" } 
+    },
+    op="div",
+    src="div r0.w, r0.w, cb0[13].w" 
+  },
+  {
+    args={
+      { name="r0", suffix="zw" },
+      { name="r0", neg=true, suffix="zzzw" },
+      { vals={ 0.0, 0.0, 3.0, 1.0 } } 
+    },
+    op="add",
+    src="add r0.zw, -r0.zzzw, l(0.000000, 0.000000, 3.000000, 1.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="yw" },
+      { name="r0", suffix="yyyw" },
+      { vals={ 0.0, 10.0, 0.0, 3.333333 } } 
+    },
+    op="mul_sat",
+    src="mul_sat r0.yw, r0.yyyw, l(0.000000, 10.000000, 0.000000, 3.333333)" 
+  },
+  {
+    args={ { name="r0", suffix="z" }, { name="r0", suffix="z" }, { vals={ 0.6 } } },
+    op="max",
+    src="max r0.z, r0.z, l(0.600000)" 
+  },
+  {
+    args={ { name="r0", suffix="z" }, { name="r0", suffix="z" }, { vals={ 1.0 } } },
+    op="min",
+    src="min r0.z, r0.z, l(1.000000)" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyzw" },
+      { name="v1", suffix="zwzz" },
+      { name="t5", suffix="xyzw" },
+      { name="s5" } 
+    },
+    op="sample_indexable(texture2d)(float,float,float,float)",
+    src="sample_indexable(texture2d)(float,float,float,float) r1.xyzw, v1.zwzz, t5.xyzw, s5" 
+  },
+  {
+    args={ { name="r1", suffix="w" }, { name="r1", suffix="w" }, { vals={ 0.0 } } },
+    op="max",
+    src="max r1.w, r1.w, l(0.000000)" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyz" },
+      { name="r1", suffix="xyzx" },
+      { name="r1", suffix="xyzx" } 
+    },
+    op="mul",
+    src="mul r1.xyz, r1.xyzx, r1.xyzx" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyz" },
+      { name="r1", suffix="xyzx" },
+      { idx="5", name="cb1", suffix="xyzx" } 
+    },
+    op="mul",
+    src="mul r1.xyz, r1.xyzx, cb1[5].xyzx" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyz" },
+      { name="r1", suffix="xyzx" },
+      { idx="5", name="cb3", suffix="wwww" },
+      { name="v5", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r1.xyz, r1.xyzx, cb3[5].wwww, v5.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r1", neg=true, suffix="w" },
+      { name="r0", suffix="z" },
+      { name="r0", suffix="x" } 
+    },
+    op="mad",
+    src="mad r0.x, -r1.w, r0.z, r0.x" 
+  },
+  {
+    args={
+      { name="r0", suffix="z" },
+      { name="r0", suffix="z" },
+      { name="r1", suffix="w" } 
+    },
+    op="mul",
+    src="mul r0.z, r0.z, r1.w" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r0", suffix="y" },
+      { name="r0", suffix="x" },
+      { name="r0", suffix="z" } 
+    },
+    op="mad",
+    src="mad r0.x, r0.y, r0.x, r0.z" 
+  },
+  {
+    args={ { name="r0", suffix="x" }, { name="r0", suffix="x" }, { vals={ 1.0 } } },
+    op="min",
+    src="min r0.x, r0.x, l(1.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r0", neg=true, suffix="x" },
+      { idx="7", name="cb3", suffix="w" },
+      { vals={ 1.0 } } 
+    },
+    op="mad",
+    src="mad r0.x, -r0.x, cb3[7].w, l(1.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="yz" },
+      { name="v1", suffix="xxyx" },
+      { idx="7", name="cb1", suffix="xxyx" },
+      { idx="7", name="cb1", suffix="zzwz" } 
+    },
+    op="mad",
+    src="mad r0.yz, v1.xxyx, cb1[7].xxyx, cb1[7].zzwz" 
+  },
+  {
+    args={
+      { name="r2", suffix="xyz" },
+      { name="r0", suffix="yzyy" },
+      { name="t1", suffix="xyzw" },
+      { name="s1" } 
+    },
+    op="sample_indexable(texture2d)(float,float,float,float)",
+    src="sample_indexable(texture2d)(float,float,float,float) r2.xyz, r0.yzyy, t1.xyzw, s1" 
+  },
+  {
+    args={
+      { name="r3", suffix="xyz" },
+      { name="r0", suffix="yzyy" },
+      { name="t8", suffix="xyzw" },
+      { name="s8" } 
+    },
+    op="sample_indexable(texture2d)(float,float,float,float)",
+    src="sample_indexable(texture2d)(float,float,float,float) r3.xyz, r0.yzyy, t8.xyzw, s8" 
+  },
+  {
+    args={
+      { name="r0", suffix="y" },
+      { name="r2", suffix="z" },
+      { name="r2", suffix="z" } 
+    },
+    op="add",
+    src="add r0.y, r2.z, r2.z" 
+  },
+  {
+    args={ { name="r0", suffix="y" }, { name="r0", suffix="y" } },
+    op="frc",
+    src="frc r0.y, r0.y" 
+  },
+  {
+    args={ { name="r0", suffix="y" }, { name="r0", suffix="y" }, { vals={ 0.5 } } },
+    op="ge",
+    src="ge r0.y, r0.y, l(0.500000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="y" },
+      { name="r0", suffix="y" },
+      { vals={ "0x3f000000" } } 
+    },
+    op="and",
+    src="and r0.y, r0.y, l(0x3f000000)" 
+  },
+  {
+    args={ { name="r4", suffix="x" }, { name="v6", suffix="w" } },
+    op="mov",
+    src="mov r4.x, v6.w" 
+  },
+  {
+    args={ { name="r4", suffix="y" }, { name="v7", suffix="w" } },
+    op="mov",
+    src="mov r4.y, v7.w" 
+  },
+  {
+    args={
+      { name="r4", suffix="xy" },
+      { idx="3", name="cb1", suffix="xxxx" },
+      { name="v4", suffix="xzxx" },
+      { name="r4", suffix="xyxx" } 
+    },
+    op="mad",
+    src="mad r4.xy, cb1[3].xxxx, v4.xzxx, r4.xyxx" 
+  },
+  {
+    args={ { name="r4", suffix="zw" }, { name="r4", suffix="xxxy" } },
+    op="frc",
+    src="frc r4.zw, r4.xxxy" 
+  },
+  {
+    args={
+      { name="r5", suffix="xy" },
+      { idx="4", name="cb1", suffix="yyyy" },
+      { name="r4", suffix="zwzz" },
+      { idx="4", name="cb1", suffix="xxxx" } 
+    },
+    op="mad",
+    src="mad r5.xy, cb1[4].yyyy, r4.zwzz, cb1[4].xxxx" 
+  },
+  {
+    args={
+      { name="r6", suffix="y" },
+      { name="r0", suffix="y" },
+      { name="r5", suffix="x" } 
+    },
+    op="add",
+    src="add r6.y, r0.y, r5.x" 
+  },
+  {
+    args={
+      { name="r7", suffix="xyz" },
+      { name="r2", suffix="zxyz" },
+      { vals={ 0.5, 0.5, 0.5, 0.0 } } 
+    },
+    op="ge",
+    src="ge r7.xyz, r2.zxyz, l(0.500000, 0.500000, 0.500000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="yz" },
+      { name="r2", suffix="xxyx" },
+      { vals={ 0.0, -0.5, -0.5, 0.0 } } 
+    },
+    op="add",
+    src="add r0.yz, r2.xxyx, l(0.000000, -0.500000, -0.500000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="yz" },
+      { abs=true, name="r0", suffix="yyzy" },
+      { vals={ 0.0, 3.0, 3.0, 0.0 } },
+      { vals={ 0.0, -0.45, -0.45, 0.0 } } 
+    },
+    op="mad",
+    src="mad r0.yz, |r0.yyzy|, l(0.000000, 3.000000, 3.000000, 0.000000), l(0.000000, -0.450000, -0.450000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="yz" },
+      { name="r0", suffix="yyzy" },
+      { vals={ 0.0, 0.0, 0.0, 0.0 } } 
+    },
+    op="max",
+    src="max r0.yz, r0.yyzy, l(0.000000, 0.000000, 0.000000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r2", suffix="xyz" },
+      { name="r7", suffix="xyzx" },
+      { vals={ "0x3f000000", "0x3f000000", "0x3f000000", 0 } } 
+    },
+    op="and",
+    src="and r2.xyz, r7.xyzx, l(0x3f000000, 0x3f000000, 0x3f000000, 0)" 
+  },
+  {
+    args={
+      { name="r6", suffix="xzw" },
+      { name="r2", suffix="zzxy" },
+      { name="r5", suffix="xxyx" } 
+    },
+    op="add",
+    src="add r6.xzw, r2.zzxy, r5.xxyx" 
+  },
+  {
+    args={ { name="r2", suffix="xy" }, { name="r4", suffix="xyxx" } },
+    op="deriv_rtx_coarse",
+    src="deriv_rtx_coarse r2.xy, r4.xyxx" 
+  },
+  {
+    args={ { name="r2", suffix="zw" }, { name="r4", suffix="xxxy" } },
+    op="deriv_rty_coarse",
+    src="deriv_rty_coarse r2.zw, r4.xxxy" 
+  },
+  {
+    args={
+      { name="r2", suffix="xyzw" },
+      { abs=true, name="r2", suffix="xyzw" },
+      { idx="4", name="cb1", suffix="yyyy" } 
+    },
+    op="mul",
+    src="mul r2.xyzw, |r2.xyzw|, cb1[4].yyyy" 
+  },
+  {
+    args={
+      { name="r2", suffix="xyzw" },
+      { name="r2", suffix="xyzw" },
+      { idx="4", name="cb1", suffix="wwww" } 
+    },
+    op="min",
+    src="min r2.xyzw, r2.xyzw, cb1[4].wwww" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r0", suffix="w" },
+      { vals={ -0.975 } },
+      { vals={ 1.6 } } 
+    },
+    op="mad",
+    src="mad r1.w, r0.w, l(-0.975000), l(1.600000)" 
+  },
+  {
+    args={
+      { name="r2", suffix="xyzw" },
+      { name="r1", suffix="wwww" },
+      { name="r2", suffix="xyzw" } 
+    },
+    op="mul",
+    src="mul r2.xyzw, r1.wwww, r2.xyzw" 
+  },
+  {
+    args={
+      { name="r4", suffix="xyzw" },
+      { name="r6", suffix="yzyy" },
+      { name="t4", suffix="xyzw" },
+      { name="s4" },
+      { name="r2", suffix="xyxx" },
+      { name="r2", suffix="zwzz" } 
+    },
+    op="sample_d_indexable(texture2d)(float,float,float,float)",
+    src="sample_d_indexable(texture2d)(float,float,float,float) r4.xyzw, r6.yzyy, t4.xyzw, s4, r2.xyxx, r2.zwzz" 
+  },
+  {
+    args={
+      { name="r5", suffix="xw" },
+      { name="r0", neg=true, suffix="yyyz" },
+      { name="r0", suffix="wwww" },
+      { name="r4", suffix="wwww" } 
+    },
+    op="mad",
+    src="mad r5.xw, -r0.yyyz, r0.wwww, r4.wwww" 
+  },
+  {
+    args={
+      { name="r5", suffix="xw" },
+      { name="r5", suffix="xxxw" },
+      { vals={ 1.0, 0.0, 0.0, 1.0 } } 
+    },
+    op="add",
+    src="add r5.xw, r5.xxxw, l(1.000000, 0.000000, 0.000000, 1.000000)" 
+  },
+  {
+    args={ { name="r5", suffix="z" }, { name="r6", suffix="w" } },
+    op="mov",
+    src="mov r5.z, r6.w" 
+  },
+  {
+    args={
+      { name="r7", suffix="xyz" },
+      { name="r5", suffix="zyzz" },
+      { name="t9", suffix="xyzw" },
+      { name="s9" },
+      { name="r2", suffix="xyxx" },
+      { name="r2", suffix="zwzz" } 
+    },
+    op="sample_d_indexable(texture2d)(float,float,float,float)",
+    src="sample_d_indexable(texture2d)(float,float,float,float) r7.xyz, r5.zyzz, t9.xyzw, s9, r2.xyxx, r2.zwzz" 
+  },
+  {
+    args={
+      { name="r8", suffix="xyz" },
+      { name="r5", suffix="zyzz" },
+      { name="t2", suffix="xyzw" },
+      { name="s2" },
+      { name="r2", suffix="xyxx" },
+      { name="r2", suffix="zwzz" } 
+    },
+    op="sample_d_indexable(texture2d)(float,float,float,float)",
+    src="sample_d_indexable(texture2d)(float,float,float,float) r8.xyz, r5.zyzz, t2.xyzw, s2, r2.xyxx, r2.zwzz" 
+  },
+  {
+    args={ { name="r6", suffix="y" }, { name="r5", suffix="y" }, { vals={ 0.5 } } },
+    op="add",
+    src="add r6.y, r5.y, l(0.500000)" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r0", suffix="y" },
+      { name="r0", suffix="w" },
+      { name="r7", suffix="z" } 
+    },
+    op="mad",
+    src="mad r1.w, r0.y, r0.w, r7.z" 
+  },
+  {
+    args={
+      { name="r7", suffix="xyz" },
+      { name="r4", neg=true, suffix="xywx" },
+      { name="r7", suffix="xyzx" } 
+    },
+    op="add",
+    src="add r7.xyz, -r4.xywx, r7.xyzx" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r1", suffix="w" },
+      { name="r5", suffix="x" } 
+    },
+    op="ge",
+    src="ge r1.w, r1.w, r5.x" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r1", suffix="w" },
+      { vals={ "0x3f800000" } } 
+    },
+    op="and",
+    src="and r1.w, r1.w, l(0x3f800000)" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r0", neg=true, suffix="y" },
+      { name="r0", suffix="w" },
+      { name="r1", suffix="w" } 
+    },
+    op="mad",
+    src="mad r1.w, -r0.y, r0.w, r1.w" 
+  },
+  {
+    args={
+      { name="r5", suffix="xy" },
+      { name="r0", suffix="wwww" },
+      { name="r0", suffix="yzyy" } 
+    },
+    op="mul",
+    src="mul r5.xy, r0.wwww, r0.yzyy" 
+  },
+  {
+    args={
+      { name="r0", suffix="y" },
+      { idx="2", name="cb1", suffix="x" },
+      { name="r1", suffix="w" },
+      { name="r5", suffix="x" } 
+    },
+    op="mad",
+    src="mad r0.y, cb1[2].x, r1.w, r5.x" 
+  },
+  {
+    args={
+      { name="r4", suffix="xyw" },
+      { name="r0", suffix="yyyy" },
+      { name="r7", suffix="xyxz" },
+      { name="r4", suffix="xyxw" } 
+    },
+    op="mad",
+    src="mad r4.xyw, r0.yyyy, r7.xyxz, r4.xyxw" 
+  },
+  {
+    args={
+      { name="r3", suffix="xyz" },
+      { name="r3", suffix="xyzx" },
+      { name="r4", suffix="zzzz" } 
+    },
+    op="mul",
+    src="mul r3.xyz, r3.xyzx, r4.zzzz" 
+  },
+  {
+    args={
+      { name="r7", suffix="xyz" },
+      { name="r6", suffix="xyxx" },
+      { name="t9", suffix="xyzw" },
+      { name="s9" },
+      { name="r2", suffix="xyxx" },
+      { name="r2", suffix="zwzz" } 
+    },
+    op="sample_d_indexable(texture2d)(float,float,float,float)",
+    src="sample_d_indexable(texture2d)(float,float,float,float) r7.xyz, r6.xyxx, t9.xyzw, s9, r2.xyxx, r2.zwzz" 
+  },
+  {
+    args={
+      { name="r2", suffix="xyz" },
+      { name="r6", suffix="xyxx" },
+      { name="t2", suffix="xyzw" },
+      { name="s2" },
+      { name="r2", suffix="xyxx" },
+      { name="r2", suffix="zwzz" } 
+    },
+    op="sample_d_indexable(texture2d)(float,float,float,float)",
+    src="sample_d_indexable(texture2d)(float,float,float,float) r2.xyz, r6.xyxx, t2.xyzw, s2, r2.xyxx, r2.zwzz" 
+  },
+  {
+    args={
+      { name="r6", suffix="xyz" },
+      { name="r4", neg=true, suffix="xywx" },
+      { name="r7", suffix="xyzx" } 
+    },
+    op="add",
+    src="add r6.xyz, -r4.xywx, r7.xyzx" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r0", suffix="z" },
+      { name="r0", suffix="w" },
+      { name="r7", suffix="z" } 
+    },
+    op="mad",
+    src="mad r1.w, r0.z, r0.w, r7.z" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r1", suffix="w" },
+      { name="r5", suffix="w" } 
+    },
+    op="ge",
+    src="ge r1.w, r1.w, r5.w" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r1", suffix="w" },
+      { vals={ "0x3f800000" } } 
+    },
+    op="and",
+    src="and r1.w, r1.w, l(0x3f800000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="z" },
+      { name="r0", neg=true, suffix="z" },
+      { name="r0", suffix="w" },
+      { name="r1", suffix="w" } 
+    },
+    op="mad",
+    src="mad r0.z, -r0.z, r0.w, r1.w" 
+  },
+  {
+    args={
+      { name="r0", suffix="z" },
+      { idx="2", name="cb1", suffix="x" },
+      { name="r0", suffix="z" },
+      { name="r5", suffix="y" } 
+    },
+    op="mad",
+    src="mad r0.z, cb1[2].x, r0.z, r5.y" 
+  },
+  {
+    args={
+      { name="r4", suffix="xyz" },
+      { name="r0", suffix="zzzz" },
+      { name="r6", suffix="xyzx" },
+      { name="r4", suffix="xywx" } 
+    },
+    op="mad",
+    src="mad r4.xyz, r0.zzzz, r6.xyzx, r4.xywx" 
+  },
+  {
+    args={
+      { name="r4", suffix="xy" },
+      { name="r4", suffix="xyxx" },
+      { vals={ 2.0, 2.0, 0.0, 0.0 } },
+      { vals={ -1.0, -1.0, 0.0, 0.0 } } 
+    },
+    op="mad",
+    src="mad r4.xy, r4.xyxx, l(2.000000, 2.000000, 0.000000, 0.000000), l(-1.000000, -1.000000, 0.000000, 0.000000)" 
+  },
+  {
+    args={ { name="r1", suffix="w" }, { name="r4", suffix="z" }, { vals={ -1.0 } } },
+    op="add",
+    src="add r1.w, r4.z, l(-1.000000)" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r0", suffix="w" },
+      { name="r1", suffix="w" },
+      { vals={ 1.0 } } 
+    },
+    op="mad",
+    src="mad r1.w, r0.w, r1.w, l(1.000000)" 
+  },
+  {
+    args={ { name="r1", suffix="w" }, { name="r1", suffix="w" }, { vals={ 0.08 } } },
+    op="max",
+    src="max r1.w, r1.w, l(0.080000)" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r1", suffix="w" },
+      { name="r1", suffix="w" } 
+    },
+    op="mul",
+    src="mul r1.w, r1.w, r1.w" 
+  },
+  {
+    args={
+      { name="r1", suffix="w" },
+      { name="r1", suffix="w" },
+      { name="r1", suffix="w" } 
+    },
+    op="mul",
+    src="mul r1.w, r1.w, r1.w" 
+  },
+  {
+    args={
+      { name="r4", suffix="xzw" },
+      { name="r4", suffix="xxxx" },
+      { name="v6", suffix="xxyz" },
+      { name="v3", suffix="xxyz" } 
+    },
+    op="mad",
+    src="mad r4.xzw, r4.xxxx, v6.xxyz, v3.xxyz" 
+  },
+  {
+    args={
+      { name="r4", suffix="xyz" },
+      { name="r4", suffix="yyyy" },
+      { name="v7", suffix="xyzx" },
+      { name="r4", suffix="xzwx" } 
+    },
+    op="mad",
+    src="mad r4.xyz, r4.yyyy, v7.xyzx, r4.xzwx" 
+  },
+  {
+    args={
+      { name="r2", suffix="w" },
+      { name="r4", suffix="xyzx" },
+      { name="r4", suffix="xyzx" } 
+    },
+    op="dp3",
+    src="dp3 r2.w, r4.xyzx, r4.xyzx" 
+  },
+  {
+    args={ { name="r2", suffix="w" }, { name="r2", suffix="w" } },
+    op="rsq",
+    src="rsq r2.w, r2.w" 
+  },
+  {
+    args={
+      { name="r4", suffix="xyz" },
+      { name="r2", suffix="wwww" },
+      { name="r4", suffix="xyzx" } 
+    },
+    op="mul",
+    src="mul r4.xyz, r2.wwww, r4.xyzx" 
+  },
+  {
+    args={
+      { name="r2", suffix="w" },
+      { name="r4", suffix="xyzx" },
+      { idx="4", name="cb3", suffix="xyzx" } 
+    },
+    op="dp3_sat",
+    src="dp3_sat r2.w, r4.xyzx, cb3[4].xyzx" 
+  },
+  {
+    args={
+      { name="r5", suffix="xyz" },
+      { name="r2", suffix="wwww" },
+      { idx="3", name="cb3", suffix="xyzx" } 
+    },
+    op="mul",
+    src="mul r5.xyz, r2.wwww, cb3[3].xyzx" 
+  },
+  {
+    args={
+      { name="r5", suffix="xyz" },
+      { name="r5", suffix="xyzx" },
+      { name="r0", suffix="xxxx" },
+      { idx="5", name="cb3", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r5.xyz, r5.xyzx, r0.xxxx, cb3[5].xyzx" 
+  },
+  {
+    args={
+      { name="r6", suffix="xyz" },
+      { name="r0", suffix="wwww" },
+      { name="r5", suffix="xyzx" } 
+    },
+    op="mul",
+    src="mul r6.xyz, r0.wwww, r5.xyzx" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyz" },
+      { name="r1", suffix="xyzx" },
+      { name="r5", suffix="xyzx" } 
+    },
+    op="add",
+    src="add r1.xyz, r1.xyzx, r5.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="v4", neg=true, suffix="xyzx" },
+      { name="v4", neg=true, suffix="xyzx" } 
+    },
+    op="dp3",
+    src="dp3 r0.x, -v4.xyzx, -v4.xyzx" 
+  },
+  {
+    args={ { name="r0", suffix="x" }, { name="r0", suffix="x" } },
+    op="rsq",
+    src="rsq r0.x, r0.x" 
+  },
+  {
+    args={
+      { name="r5", suffix="xyz" },
+      { name="v4", neg=true, suffix="xyzx" },
+      { name="r0", suffix="xxxx" },
+      { idx="4", name="cb3", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r5.xyz, -v4.xyzx, r0.xxxx, cb3[4].xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r5", suffix="xyzx" },
+      { name="r5", suffix="xyzx" } 
+    },
+    op="dp3",
+    src="dp3 r0.x, r5.xyzx, r5.xyzx" 
+  },
+  {
+    args={ { name="r0", suffix="x" }, { name="r0", suffix="x" } },
+    op="rsq",
+    src="rsq r0.x, r0.x" 
+  },
+  {
+    args={
+      { name="r5", suffix="xyz" },
+      { name="r0", suffix="xxxx" },
+      { name="r5", suffix="xyzx" } 
+    },
+    op="mul",
+    src="mul r5.xyz, r0.xxxx, r5.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r4", suffix="xyzx" },
+      { name="r5", suffix="xyzx" } 
+    },
+    op="dp3_sat",
+    src="dp3_sat r0.x, r4.xyzx, r5.xyzx" 
+  },
+  {
+    args={
+      { name="r2", suffix="w" },
+      { name="r0", suffix="x" },
+      { name="r1", suffix="w" },
+      { name="r0", neg=true, suffix="x" } 
+    },
+    op="mad",
+    src="mad r2.w, r0.x, r1.w, -r0.x" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r2", suffix="w" },
+      { name="r0", suffix="x" },
+      { vals={ 1.0 } } 
+    },
+    op="mad",
+    src="mad r0.x, r2.w, r0.x, l(1.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r0", suffix="x" },
+      { name="r0", suffix="x" } 
+    },
+    op="mul",
+    src="mul r0.x, r0.x, r0.x" 
+  },
+  {
+    args={ { name="r0", suffix="x" }, { name="r0", suffix="x" }, { vals={ 3.141593 } } },
+    op="mul",
+    src="mul r0.x, r0.x, l(3.141593)" 
+  },
+  {
+    args={
+      { name="r0", suffix="x" },
+      { name="r1", suffix="w" },
+      { name="r0", suffix="x" } 
+    },
+    op="div",
+    src="div r0.x, r1.w, r0.x" 
+  },
+  {
+    args={ { name="r0", suffix="x" }, { name="r0", suffix="x" }, { vals={ 0.016 } } },
+    op="mul",
+    src="mul r0.x, r0.x, l(0.016000)" 
+  },
+  {
+    args={
+      { name="r4", suffix="xyz" },
+      { name="r0", suffix="xxxx" },
+      { name="r6", suffix="xyzx" } 
+    },
+    op="mul",
+    src="mul r4.xyz, r0.xxxx, r6.xyzx" 
+  },
+  {
+    args={
+      { name="r5", suffix="xyz" },
+      { name="r3", neg=true, suffix="xyzx" },
+      { vals={ 1.8, 1.8, 1.8, 0.0 } },
+      { name="r8", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r5.xyz, -r3.xyzx, l(1.800000, 1.800000, 1.800000, 0.000000), r8.xyzx" 
+  },
+  {
+    args={
+      { name="r6", suffix="xyz" },
+      { name="r3", suffix="xyzx" },
+      { vals={ 1.8, 1.8, 1.8, 0.0 } } 
+    },
+    op="mul",
+    src="mul r6.xyz, r3.xyzx, l(1.800000, 1.800000, 1.800000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r5", suffix="xyz" },
+      { name="r0", suffix="yyyy" },
+      { name="r5", suffix="xyzx" },
+      { name="r6", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r5.xyz, r0.yyyy, r5.xyzx, r6.xyzx" 
+  },
+  {
+    args={
+      { name="r2", suffix="xyz" },
+      { name="r2", suffix="xyzx" },
+      { name="r5", neg=true, suffix="xyzx" } 
+    },
+    op="add",
+    src="add r2.xyz, r2.xyzx, -r5.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { name="r0", suffix="zzzz" },
+      { name="r2", suffix="xyzx" },
+      { name="r5", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r0.xyz, r0.zzzz, r2.xyzx, r5.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { name="r3", neg=true, suffix="xyzx" },
+      { vals={ 1.8, 1.8, 1.8, 0.0 } },
+      { name="r0", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r0.xyz, -r3.xyzx, l(1.800000, 1.800000, 1.800000, 0.000000), r0.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { name="r0", suffix="wwww" },
+      { name="r0", suffix="xyzx" },
+      { name="r6", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r0.xyz, r0.wwww, r0.xyzx, r6.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { name="r0", suffix="xyzx" },
+      { name="r0", suffix="xyzx" } 
+    },
+    op="mul",
+    src="mul r0.xyz, r0.xyzx, r0.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { name="r0", suffix="xyzx" },
+      { vals={ 0.31831, 0.31831, 0.31831, 0.0 } } 
+    },
+    op="mul",
+    src="mul r0.xyz, r0.xyzx, l(0.318310, 0.318310, 0.318310, 0.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { name="r1", suffix="xyzx" },
+      { name="r0", suffix="xyzx" },
+      { name="r4", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r0.xyz, r1.xyzx, r0.xyzx, r4.xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="w" },
+      { name="r4", suffix="xyzx" },
+      { vals={ 0.6378, 2.1456, 1.0, 0.0 } } 
+    },
+    op="dp3",
+    src="dp3 r0.w, r4.xyzx, l(0.637800, 2.145600, 1.000000, 0.000000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="w" },
+      { name="r0", suffix="w" },
+      { idx="1", name="cb1", suffix="x" } 
+    },
+    op="mul",
+    src="mul r0.w, r0.w, cb1[1].x" 
+  },
+  {
+    args={ { name="r0", suffix="w" }, { name="r0", suffix="w" }, { vals={ 1.0 } } },
+    op="ge",
+    src="ge r0.w, r0.w, l(1.000000)" 
+  },
+  {
+    args={
+      { name="o0", suffix="w" },
+      { name="r0", suffix="w" },
+      { vals={ "0x3f800000" } } 
+    },
+    op="and",
+    src="and o0.w, r0.w, l(0x3f800000)" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { name="r0", suffix="xyzx" },
+      { idx="2", name="cb3", suffix="zzzz" },
+      { idx="6", name="cb3", neg=true, suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r0.xyz, r0.xyzx, cb3[2].zzzz, -cb3[6].xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { name="v5", suffix="wwww" },
+      { name="r0", suffix="xyzx" },
+      { idx="6", name="cb3", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r0.xyz, v5.wwww, r0.xyzx, cb3[6].xyzx" 
+  },
+  {
+    args={
+      { name="r1", suffix="xyz" },
+      { name="r0", neg=true, suffix="xyzx" },
+      { idx="8", name="cb3", suffix="xyzx" } 
+    },
+    op="add",
+    src="add r1.xyz, -r0.xyzx, cb3[8].xyzx" 
+  },
+  {
+    args={
+      { name="r0", suffix="xyz" },
+      { idx="8", name="cb3", suffix="wwww" },
+      { name="r1", suffix="xyzx" },
+      { name="r0", suffix="xyzx" } 
+    },
+    op="mad",
+    src="mad r0.xyz, cb3[8].wwww, r1.xyzx, r0.xyzx" 
+  },
+  {
+    args={
+      { name="o0", suffix="xyz" },
+      { name="r0", suffix="xyzx" },
+      { vals={ 8.0, 8.0, 8.0, 0.0 } } 
+    },
+    op="min",
+    src="min o0.xyz, r0.xyzx, l(8.000000, 8.000000, 8.000000, 0.000000)" 
+  },
+  { args={  }, op="ret", src="ret" },
+  { comment=" Approximately 145 instruction slots used" } 
+}
