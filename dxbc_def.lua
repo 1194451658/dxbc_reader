@@ -186,16 +186,25 @@ local function get_var_name(register, swizzle, sep_suffix)
 end
 
 m.shader_def = {
+    -- dp2, dp3, dp4命令
+    -- dot-product命令
     ['dp%d(.*)'] = function(op_args, a, b, c)
         local namea = get_var_name(a)
         local nameb = get_var_name(b)
         local namec = get_var_name(c)
+
+        -- 判断，参数中，有没有_sat
+        -- 其实就是判断命令，例如命令： mov_sat r0.xy, v1.yxyy
         if op_args._sat then
             return _format('%s = saturate(dot(%s, %s))', namea, nameb, namec)
         else
             return _format('%s = dot(%s, %s)', namea, nameb, namec)
         end
     end,
+
+    -- mov, dmov命令
+    -- op_args: '[d]?mov(.*)'解析mov命令，后面的后缀
+    -- a, b: mov命令的args
     ['[d]?mov(.*)'] = function(op_args, a, b)
         if op_args._sat then
             return _format('%s = saturate(%s)', get_var_name(a), get_var_name(b, a))
@@ -203,6 +212,8 @@ m.shader_def = {
             return _format('%s = %s', get_var_name(a), get_var_name(b, a))
         end
     end,
+
+    -- dmovc, movc命令
     ['[d]?movc'] = function(op_args, dest, cond, a, b)
         local n_dest= get_var_name(dest)
         local n_cond = get_var_name(cond, dest)
@@ -371,6 +382,8 @@ m.shader_def = {
             return 'discard'
         end
     end,
+
+    -- if命令
     ['if(.*)'] = function(op_args, a)
         local namea = get_var_name(a)
         if op_args._z then
@@ -379,6 +392,7 @@ m.shader_def = {
             return _format('if (%s != 0) {', namea), 'if'
         end
     end,
+    -- else命令
     ['else'] = function(op_args)
         return '} else {', 'else'
     end,

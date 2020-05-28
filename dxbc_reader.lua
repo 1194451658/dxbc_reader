@@ -51,13 +51,35 @@ dxbc_def:init(parse_data)
 
 --print(DataDump(parse_data))
 
+-- op: 命令的字符串
+-- 匹配所有命令的pattern, 看是哪个命令
+-- command:
+-- {
+--   args={ { name="r0", suffix="y" }, { idx="6", name="cb0", suffix="w" } },
+--   op="mov",
+--   src="mov r0.y, cb0[6].w" 
+-- },
+
+-- 返回：匹配上的命令的pattern, 匹配上的命令的参数类型(例如：)
 local function get_op(op)
     if not op then return end
 
+    -- 匹配的命令pattern，找到的capture
+    -- 被当作op_param
     local capture
+
+    -- 匹配的命令的pattern，被当作op_name
     local target_op
     for op_def in  pairs(dxbc_def.shader_def) do
-        if op:gsub('^' .. op_def .. '$', function(...) capture = {...} end) and capture then
+        -- lua，调用字符串的gsub
+        -- op_def是，匹配命令的正则表达式
+        if op:gsub(
+            '^' .. op_def .. '$',
+            function(...) 
+                capture = {...} 
+            end
+            ) and
+            capture then
             target_op = op_def
             break
         end
@@ -65,6 +87,8 @@ local function get_op(op)
     return target_op, capture
 end
 
+-- 就是把value，也当成了key
+-- 可以判断一个value是否存在
 local function arr2dic(list)
     local dic = {}
     for idx, v in pairs(list) do
@@ -105,9 +129,15 @@ local BLOCK_DEF = {
     }
 }
 
+-- 把参数中的idx，能转换成nubmer，就转换成number
+-- command: lpeg匹配到的命令
 local function pre_process_command(command)
+    -- 命令的参数
     if command.args then
         for _, reg in pairs(command.args) do
+
+            -- 如果有[]里的内容
+            -- 如果，可以转换成数字，则转换成数字
             if reg.idx then
                 if tonumber(reg.idx) then
                     reg.idx = tonumber(reg.idx)
@@ -123,6 +153,7 @@ local idx = 2
 local line_id = 1
 local blocks = {}
 
+-- 注释里定义的内容
 local res_def = parse_data[1]
 
 -- 添加，翻译的一行
@@ -139,6 +170,10 @@ end
 --
 
 -- 生成cbuff
+-- 根据dxbc注释里，定义的内容
+-- 生成class, class INPUT, class OUT
+--
+
 ------------  CBUFFER DEFINE
 for _, cbuff in pairs(res_def.cbuff_data) do
     append('class ' .. cbuff.cbuffer_name .. '{')
@@ -175,20 +210,56 @@ end
 append('}')
 ------------ CBUFFER DEFINE END
 
+-- 生成，主函数
 append("void main(INPUT in) {")
 blocks[1] = {close = {}}
+
+-- 遍历语法树
+-- idx: 
+--  * 从2开始
+--  * 跳过开头的，注释里的内容
+--  * 跳过开头的，例如：ps_5_0语句
 while idx <= #parse_data do
+    -- command: 
+    --  * dxbc命令
+    --  * 例如：
+    -- {
+    --   args={ { name="r0", suffix="y" }, { idx="6", name="cb0", suffix="w" } },
+    --   op="mov",
+    --   src="mov r0.y, cb0[6].w" 
+    -- },
     local command = parse_data[idx]
+
+    -- 如果是命令
     if command.op then
+        -- op: 感觉像是字符串格式
+        -- op_name: 匹配上的命令的pattern
+        -- op_param: 命令后面的后缀，例如：mov_sat中的"_sat"
         local op_name, op_param = get_op(command.op)
 
+        -- 有匹配到，是哪个命令
         if op_name then
+
+            -- def.lua中定义的
+            -- 命令对应的函数
             local op_func = dxbc_def.shader_def[op_name]
             if op_func then
+                -- 把command参数中的idx，能转换成nubmer，就转换成number
                 pre_process_command(command)
+
+                -- 处理op_param，可以方便的判断，有没有_sat
+                -- 例如命令： mov_sat r0.xy, v1.yxyy
+                -- 就是把value，也当成了key
+                -- 可以判断一个value是否存在
                 op_param = op_param and arr2dic( op_param) or {}
+
+                -- 进行语句的翻译
+                -- op_str: 翻译之后的语句
                 local op_str, block_tag = op_func(op_param, table.unpack(command.args))
 
+                -- blocks: 
+                --  * 标记{}的栈？
+                --  * 用来判断，是第几层缩进
                 local last_block = blocks[#blocks]
                 if last_block and last_block.close[block_tag] then
                     table.remove(blocks, #blocks)
@@ -201,8 +272,14 @@ while idx <= #parse_data do
                     end
                     append(string.rep('\t', #blocks) .. command.src)
                 end
+
+                -- 生成代码的，最后一个字符
                 local last_gram = op_str:sub(#op_str)
+
+                -- 判断，行末结束字符是什么
                 local end_block = (last_gram == '}' or last_gram == '{' ) and '' or ';'
+
+                -- 写入，生成的代码
                 append(string.format('%s%s%s', string.rep('\t', #blocks), op_str, end_block))
 
                 if BLOCK_DEF[block_tag] then
