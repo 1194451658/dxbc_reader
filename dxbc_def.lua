@@ -7,13 +7,14 @@ local var_mask_map = {x=0, y=4,z=8,w=12}
 
 local bind_map
 
+-- 根据只是处理了，注释里的东西
 function m:init(parse_data)
 
     local res_data = parse_data[1]
 
     local var_mask =  {'x', 'y', 'z', 'w'}
 
-
+    -- 处理cbuffer
     local cbuff_map = {}
     for _, cbuffer in pairs(res_data.cbuff_data) do
         cbuff_map[cbuffer.cbuffer_name] = cbuffer.vars
@@ -25,12 +26,14 @@ function m:init(parse_data)
 
     --print(DataDump(cbuff_map))
 
+    -- 处理Resource Bindings
     bind_map = {}
 
     for _, bind in pairs(res_data.binding_data) do
         bind_map[bind.bind] = {name = bind.name, desc = cbuff_map[bind.name]}
     end
 
+    -- 处理Input signature
     for _, bind in pairs(res_data.input_data) do
         local name = bind.name
         if name == 'TEXCOORD' then
@@ -39,6 +42,7 @@ function m:init(parse_data)
         bind_map[bind.bind] = {name = 'in.' .. name, desc = bind}
     end
 
+    -- Output signature
     for _, bind in pairs(res_data.output_data) do
         local name = bind.name
         if name == 'TEXCOORD' then

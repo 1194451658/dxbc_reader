@@ -316,11 +316,47 @@ return function(input)
                 v.last_idx = #comms
             end
         end
-        local cbuff_data = block_data.idx_cbuffer and process_cbuffer(table.concat(comms, '\n', block_data.idx_cbuffer.idx+1, block_data.idx_cbuffer.last_idx)) or {}
 
-        local binding_data = block_data.idx_binding and process_binding(comms, block_data.idx_binding.idx+3, block_data.idx_binding.last_idx) or {}
-        local input_data = block_data.idx_input and process_input(comms, block_data.idx_input.idx+3, block_data.idx_input.last_idx) or {}
-        local output_data = block_data.idx_output and process_output(comms, block_data.idx_output.idx+3, block_data.idx_output.last_idx) or {}
+        -- 解析cbuffer
+        -- 例子代码：
+        -- // Buffer Definitions:
+        -- //
+        -- // cbuffer GlobalPS
+        -- // {
+        -- //
+        -- //   float4 CameraPosPS;                // Offset:    0 Size:    16 [unused]
+        -- //   float4 CameraInfoPS;               // Offset:   16 Size:    16 [unused]
+        -- //   float4 EnvInfo;                    // Offset:   32 Size:    16
+        -- //   float4 SunColor;                   // Offset:   48 Size:    16
+        -- //   float4 SunDirection;               // Offset:   64 Size:    16
+        -- //   float4 AmbientColor;               // Offset:   80 Size:    16
+        -- //   float4 FogColor;                   // Offset:   96 Size:    16
+        -- //   float4 ShadowColor;                // Offset:  112 Size:    16
+        -- //   float4 ScreenColor;                // Offset:  128 Size:    16
+        -- //   float4 ReflectionPos;              // Offset:  144 Size:    16 [unused]
+        -- //   float4 ScreenInfoPS;               // Offset:  160 Size:    16 [unused]
+        -- //   float4 Misc;                       // Offset:  176 Size:    16
+        -- //
+        -- // }
+        local cbuff_data = block_data.idx_cbuffer and
+            -- 解析cbuffer
+            process_cbuffer(
+                table.concat(comms, '\n', block_data.idx_cbuffer.idx+1, block_data.idx_cbuffer.last_idx)
+            ) or {}
+
+        local binding_data = block_data.idx_binding and
+            process_binding(
+                comms, block_data.idx_binding.idx+3, block_data.idx_binding.last_idx
+            ) or {}
+
+        local input_data = block_data.idx_input and
+            process_input(
+                comms, block_data.idx_input.idx+3, block_data.idx_input.last_idx
+            ) or {}
+        local output_data = block_data.idx_output and
+            process_output(
+                comms, block_data.idx_output.idx+3, block_data.idx_output.last_idx
+            ) or {}
 
         --print(DataDump(block_data))
 

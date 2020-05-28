@@ -117,6 +117,7 @@ local function pre_process_command(command)
     end
 end
 
+-- 翻译之后的代码
 local translate = {}
 local idx = 2
 local line_id = 1
@@ -124,6 +125,7 @@ local blocks = {}
 
 local res_def = parse_data[1]
 
+-- 添加，翻译的一行
 local function append(msg)
     translate[#translate+1] = msg
 end
@@ -132,6 +134,11 @@ if DEBUG == 't' then
     append(DataDump(res_def.binding_data))
 end
 
+--
+-- 开始代码生成
+--
+
+-- 生成cbuff
 ------------  CBUFFER DEFINE
 for _, cbuff in pairs(res_def.cbuff_data) do
     append('class ' .. cbuff.cbuffer_name .. '{')
@@ -141,6 +148,7 @@ for _, cbuff in pairs(res_def.cbuff_data) do
     append('}')
 end
 
+-- 生成Input
 local _tex_reg_cnt = 1
 append('class INPUT {')
 for _, var in pairs(res_def.input_data) do
@@ -153,6 +161,7 @@ for _, var in pairs(res_def.input_data) do
 end
 append('}')
 
+-- 生成Out
 _tex_reg_cnt=1
 append('class OUT {')
 for _, var in pairs(res_def.output_data) do
